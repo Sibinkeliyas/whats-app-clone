@@ -1,20 +1,26 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-
-import { useColorScheme } from '@/components/useColorScheme';
+import CameraCom from "@/components/camera";
+import ChatHeader from "@/components/headerComponents/chatHeader";
+import HeaderFlash from "@/components/headerComponents/headerFlash";
+import { tintColorDark, tintColorLight } from "@/constants/Colors";
+import { JWTProvider } from "@/context/JWTContext";
+import { ThemeProvider as ThemeProviderContext } from "@/context/ThemeContext";
+import useTheme from "@/hooks/useTheme";
+import { store } from "@/store";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { Provider } from "react-redux";
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from 'expo-router';
+} from "expo-router";
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: "index",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -22,7 +28,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
 
@@ -45,14 +51,54 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProviderContext>
+        <JWTProvider>
+          <>
+            <Stack>
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="(un_auth)" options={{ headerShown: false }} />
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="camera"
+                options={{
+                  headerBackTitleVisible: false,
+                  headerRight: () => {
+                    return <HeaderFlash />;
+                  },
+                  headerTitle: "",
+                  headerTransparent: true,
+                  headerTintColor: "#FFF",
+                }}
+              />
+              <Stack.Screen
+                name="capturedimage"
+                options={{
+                  headerBackTitleVisible: false,
+                  headerTitle: "",
+                  headerTransparent: true,
+                  headerTintColor: "#FFF",
+                }}
+              />
+              <Stack.Screen
+                name="(auth)"
+                options={{
+                  headerBackTitleVisible: false,
+                  headerTitle(props) {
+                      return <ChatHeader />;
+                  },
+                  headerTintColor: tintColorLight,
+                }}
+              />
+              <Stack.Screen
+                name="newChat"
+                options={{ presentation: "modal", headerTitle: "New Chat" }}
+              />
+            </Stack>
+          </>
+        </JWTProvider>
+      </ThemeProviderContext>
+    </Provider>
   );
 }

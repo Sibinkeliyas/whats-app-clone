@@ -1,31 +1,58 @@
-import { StyleSheet } from 'react-native';
+import UsersList from "@/components/chatlist/userslist";
+import useAuth from "@/hooks/useAuth";
+import { getChatedList } from "@/util/api/users";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+export type UsersListProps = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  title: string;
+};
 
 export default function TabOneScreen() {
+  const { user } = useAuth();
+  const [usersList, setUsersList] = useState<UsersListProps[]>([]);
+  const [filteredData, setFilteredData] = useState<UsersListProps[]>([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const getUsersList = async () => {
+      try {
+        const res = await getChatedList(user?.id || 0);
+        setUsersList(res.users);
+        setFilteredData(res.users);
+      } catch (error) {}
+    };
+    getUsersList();
+  }, [user?.id]);
+
+  useEffect(() => {
+    const users = [...usersList];
+    setFilteredData([
+      ...users.filter((user) =>
+        user.firstName
+          .toLowerCase()
+          .replaceAll(" ", "")
+          .includes(search.toLowerCase().replaceAll(" ", ""))
+      ),
+    ]);
+  }, [search]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <UsersList
+        usersList={filteredData}
+        search={search}
+        setSearch={setSearch}
+      />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    paddingHorizontal: 10,
   },
 });
