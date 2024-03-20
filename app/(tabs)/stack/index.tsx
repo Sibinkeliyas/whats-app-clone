@@ -1,5 +1,6 @@
 import UsersList from "@/components/chatlist/userslist";
 import useAuth from "@/hooks/useAuth";
+import { useSelector } from "@/store";
 import { getChatedList } from "@/util/api/users";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -13,9 +14,9 @@ export type UsersListProps = {
 
 export default function TabOneScreen() {
   const { user } = useAuth();
+  const { searchUser } = useSelector((state) => state.userReducer);
   const [usersList, setUsersList] = useState<UsersListProps[]>([]);
   const [filteredData, setFilteredData] = useState<UsersListProps[]>([]);
-  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const getUsersList = async () => {
@@ -35,18 +36,15 @@ export default function TabOneScreen() {
         user.firstName
           .toLowerCase()
           .replaceAll(" ", "")
-          .includes(search.toLowerCase().replaceAll(" ", ""))
+          .includes(searchUser.toLowerCase().replaceAll(" ", ""))
       ),
     ]);
-  }, [search]);
+  }, [searchUser]);
+  console.log(searchUser, "searchUser");
 
   return (
     <View style={styles.container}>
-      <UsersList
-        usersList={filteredData}
-        search={search}
-        setSearch={setSearch}
-      />
+      <UsersList usersList={filteredData} />
     </View>
   );
 }

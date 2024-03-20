@@ -1,4 +1,4 @@
-import { UsersListProps } from "@/app/(tabs)";
+import { UsersListProps } from "@/app/(tabs)/stack";
 import React, { useState } from "react";
 import {
   FlatList,
@@ -13,55 +13,49 @@ import useTheme from "@/hooks/useTheme";
 import { theme, tintColorLight } from "@/constants/Colors";
 import Icon from "@/components/icons";
 
-const UsersList = ({
-  usersList,
-  search,
-  setSearch
-}: {
-  usersList: UsersListProps[];
-  search: string;
-  setSearch: (search: string) => void;
-}) => {
+const UsersList = ({ usersList }: { usersList: UsersListProps[] }) => {
   const { dark } = useTheme();
   return (
     <FlatList
       data={usersList}
       scrollEnabled
-      ListHeaderComponent={
-        <View style={styles.listContainer}>
-          <Text
-            style={{
-              ...styles.listText,
-              color: dark ? theme.dark.text : theme.light.text,
-            }}
-          >
-            Chat
-          </Text>
-          <View style={{ ...styles.filterContainer }}>
-            <View
-              style={{
-                ...styles.inputFieldView,
-                backgroundColor: dark
-                  ? theme.dark.textFieldBgColor
-                  : theme.light.textFieldBgColor,
-              }}
-            >
-              <TextInput
-                placeholderTextColor={"gray"}
-                placeholder="Search"
-                value={search}
-                onChangeText={setSearch}
-                style={{
-                  color: dark ? theme.dark.inputText : theme.light.inputText,
-                }}
-              />
-            </View>
-            <Pressable style={{ marginRight: 10 }}>
-              <Icon color={tintColorLight} name="filter" size={25} />
-            </Pressable>
-          </View>
-        </View>
-      }
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={{ paddingBottom: 40 }}
+      // ListHeaderComponent={
+      //   <View style={styles.listContainer}>
+      //     <Text
+      //       style={{
+      //         ...styles.listText,
+      //         color: dark ? theme.dark.text : theme.light.text,
+      //       }}
+      //     >
+      //       Chat
+      //     </Text>
+      //     <View style={{ ...styles.filterContainer }}>
+      //       <View
+      //         style={{
+      //           ...styles.inputFieldView,
+      //           backgroundColor: dark
+      //             ? theme.dark.textFieldBgColor
+      //             : theme.light.textFieldBgColor,
+      //         }}
+      //       >
+      //         <TextInput
+      //           placeholderTextColor={"gray"}
+      //           placeholder="Search"
+      //           value={search}
+      //           onChangeText={setSearch}
+      //           style={{
+      //             color: dark ? theme.dark.inputText : theme.light.inputText,
+      //           }}
+      //         />
+      //       </View>
+      //       <Pressable style={{ marginRight: 10 }}>
+      //         <Icon color={tintColorLight} name="filter" size={25} />
+      //       </Pressable>
+      //     </View>
+      //   </View>
+      // }
       renderItem={({ item, index }) => <UserSec userData={item} key={index} />}
     />
   );

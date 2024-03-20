@@ -24,7 +24,7 @@ const Page = () => {
 
   const alert = () =>
     Alert.alert("Success", "You have Loggined succesfully", [
-      { text: "OK", onPress: () => router.push("/(tabs)") },
+      { text: "OK", onPress: () => router.push("/(tabs)/stack/") },
     ]);
 
   const onSubmit = async () => {

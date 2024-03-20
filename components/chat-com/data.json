@@ -1,6 +1,6 @@
 [
   {
-    "author": "UserA",
+    "author": "me",
     "time": "2024-03-20T10:00:00",
     "id": 1,
     "message": "Hey there! How are you doing?"
@@ -12,7 +12,7 @@
     "message": "Hi! I'm good, thanks for asking. How about you?"
   },
   {
-    "author": "UserA",
+    "author": "me",
     "time": "2024-03-20T10:08:00",
     "id": 3,
     "message": "I'm doing great too, just catching up on some work. Anything exciting happening?"
@@ -24,7 +24,7 @@
     "message": "Not much here, just the usual routine. Have you seen the latest episode of that TV show?"
   },
   {
-    "author": "UserA",
+    "author": "me",
     "time": "2024-03-20T10:15:00",
     "id": 5,
     "message": "Yeah, I watched it last night. It was amazing!"
@@ -36,7 +36,7 @@
     "message": "I need to catch up then. What other shows are you watching these days?"
   },
   {
-    "author": "UserA",
+    "author": "me",
     "time": "2024-03-20T10:22:00",
     "id": 7,
     "message": "I'm also following that new drama series. It's really intriguing."
@@ -48,7 +48,7 @@
     "message": "Oh, I've heard about it. Maybe I'll give it a try. By the way, did you finish that project you were working on?"
   },
   {
-    "author": "UserA",
+    "author": "me",
     "time": "2024-03-20T10:30:00",
     "id": 9,
     "message": "Not yet, but I'm making good progress. Should be done by the end of the week."

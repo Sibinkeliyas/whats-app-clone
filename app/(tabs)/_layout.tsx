@@ -10,16 +10,11 @@ export default function TabLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="index"
+        name="stack"
         options={{
-          headerRight: () => (
-            <View style={styles.mainHeaderView}>
-              <Camera />
-              <Plus />
-              <ThemeSwitch />
-            </View>
-          ),
-          headerTitle: "",
+          title: "Chat",
+          headerShown: false,
+
           headerBackgroundContainerStyle: {
             backgroundColor: "trasparent",
           },
@@ -45,10 +40,4 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-const styles = StyleSheet.create({
-  mainHeaderView: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});
+

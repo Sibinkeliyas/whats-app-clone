@@ -1,4 +1,4 @@
-import { UsersListProps } from "@/app/(tabs)";
+import { UsersListProps } from "@/app/(tabs)/stack";
 import { theme, tintColorDark, tintColorLight } from "@/constants/Colors";
 import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
@@ -8,7 +8,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const UserSec = ({ userData }: { userData: UsersListProps }) => {
   const { dark } = useTheme();
   return (
-    <TouchableOpacity style={{ ...styles.container }} onPress={() => router.push(`/(auth)/user/${userData.id}`)}>
+    <TouchableOpacity
+      style={{ ...styles.container }}
+      onPress={() => router.push(`/(auth)/user/${userData.id}`)}
+    >
       <Image
         source={require("../../../assets/images/defaultProfile.jpg")}
         style={styles.profileImage}
@@ -18,7 +21,7 @@ const UserSec = ({ userData }: { userData: UsersListProps }) => {
           width: "80%",
           borderBottomColor: "gray",
           borderTopColor: "gray",
-          borderBottomWidth: .5,
+          borderBottomWidth: 0.5,
         }}
       >
         <View style={styles.listHeaderView}>

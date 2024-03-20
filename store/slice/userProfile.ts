@@ -10,6 +10,7 @@ const initialState: DefaultProps["userProps"] = {
     lastName: "",
     title: "",
   },
+  searchUser: "",
 };
 
 const userSlice = createSlice({
@@ -21,11 +22,15 @@ const userSlice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn;
     },
     updateSelectedUser(state, action) {
-        state.selectedUser = action.payload
+      state.selectedUser = action.payload;
+    },
+    usersFilter(state, action) {
+      state.searchUser = action.payload;
     },
   },
 });
 
 export default userSlice.reducer;
 
-export const { updateUserData, updateSelectedUser } = userSlice.actions;
+export const { updateUserData, updateSelectedUser, usersFilter } =
+  userSlice.actions;

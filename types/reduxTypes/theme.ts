@@ -1,4 +1,4 @@
-import { UsersListProps } from "@/app/(tabs)";
+import { UsersListProps } from "@/app/(tabs)/stack";
 import { UserProps } from "../type";
 
 export type themeInitialType = {
@@ -9,5 +9,6 @@ export type themeInitialType = {
 export type userInitialTypes = {
   user: UserProps | null;
   isLoggedIn: boolean;
-  selectedUser : UsersListProps
+  selectedUser: UsersListProps;
+  searchUser: string
 };

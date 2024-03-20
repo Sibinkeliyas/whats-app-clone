@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { getUserData } from "@/util/api/users";
-import { UsersListProps } from "@/app/(tabs)";
+import { UsersListProps } from "@/app/(tabs)/stack";
 import { useDispatch } from "@/store";
 import { updateSelectedUser } from "@/store/slice/userProfile";
 import ChatCom from "@/components/chat-com";

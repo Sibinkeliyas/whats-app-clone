@@ -1,15 +1,7 @@
-import useAuth from "@/hooks/useAuth";
 import { Stack, router } from "expo-router";
-import React, { ReactElement, useEffect } from "react";
+import React from "react";
 
 const UnAuthLayout = () => {
-  const { isLoggedIn } = useAuth();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      router.push("/(tabs)/");
-    }
-  }, [isLoggedIn]);
 
   return (
     <>

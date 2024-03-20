@@ -8,6 +8,7 @@ import {
   Text,
   TextInput,
   View,
+  Keyboard,
 } from "react-native";
 import Icon from "../icons";
 import AndDesignIcon from "../icons/AntDesignIcon";
@@ -18,9 +19,11 @@ import { changeSaveOption, updateSelectedImage } from "@/store/slice/camera";
 const BottomeTab = ({
   text,
   setText,
+  handleUpdateMsg,
 }: {
   text: string;
   setText: (text: string) => void;
+  handleUpdateMsg: (image?: string, message?: string, author?: string) => void;
 }) => {
   const dispatch = useDispatch();
   const { dark } = useSelector((state) => state.themeReducer);
@@ -33,8 +36,6 @@ const BottomeTab = ({
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result?.assets?.[0].uri);
-
     dispatch(updateSelectedImage(result?.assets?.[0].uri || ""));
   };
   return (
@@ -71,15 +72,22 @@ const BottomeTab = ({
             placeholder="Search"
             value={text}
             onChangeText={setText}
+            multiline
+            numberOfLines={4}
             style={{
               color: dark ? theme.dark.inputText : theme.light.inputText,
+              maxHeight : 100
             }}
           />
         </View>
         {text ? (
           <TouchableOpacity
             style={{ paddingHorizontal: 10 }}
-            onPress={() => setText("")}
+            onPress={() => {
+              handleUpdateMsg("", text);
+              setText("");
+              Keyboard.dismiss();
+            }}
           >
             <Icon name="send" color={tintColorLight} size={23} />
           </TouchableOpacity>
