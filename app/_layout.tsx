@@ -10,6 +10,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 
@@ -56,7 +57,16 @@ function RootLayoutNav() {
       <ThemeProviderContext>
         <JWTProvider>
           <>
-            <Stack>
+            <StatusBar
+              style="dark"
+              backgroundColor="transparent"
+              translucent={true}
+            />
+            <Stack
+              screenOptions={{
+                statusBarColor: "light",
+              }}
+            >
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen name="(un_auth)" options={{ headerShown: false }} />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -86,7 +96,7 @@ function RootLayoutNav() {
                 options={{
                   headerBackTitleVisible: false,
                   headerTitle(props) {
-                      return <ChatHeader />;
+                    return <ChatHeader />;
                   },
                   headerTintColor: tintColorLight,
                 }}

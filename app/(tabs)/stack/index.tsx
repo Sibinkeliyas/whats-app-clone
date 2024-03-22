@@ -40,7 +40,6 @@ export default function TabOneScreen() {
       ),
     ]);
   }, [searchUser]);
-  console.log(searchUser, "searchUser");
 
   return (
     <View style={styles.container}>

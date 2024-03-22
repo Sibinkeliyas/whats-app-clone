@@ -9,6 +9,7 @@ import {
   TextInput,
   View,
   Keyboard,
+  Platform,
 } from "react-native";
 import Icon from "../icons";
 import AndDesignIcon from "../icons/AntDesignIcon";
@@ -65,6 +66,7 @@ const BottomeTab = ({
               ? theme.dark.textFieldBgColor
               : theme.light.textFieldBgColor,
             width: text ? "70%" : "60%",
+            borderRadius: Platform.OS === "android" ? 15 : 30,
           }}
         >
           <TextInput
@@ -73,10 +75,9 @@ const BottomeTab = ({
             value={text}
             onChangeText={setText}
             multiline
-            numberOfLines={4}
             style={{
               color: dark ? theme.dark.inputText : theme.light.inputText,
-              maxHeight : 100
+              maxHeight: 100,
             }}
           />
         </View>

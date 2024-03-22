@@ -2,55 +2,63 @@ import { UsersListProps } from "@/app/(tabs)/stack";
 import { theme, tintColorDark, tintColorLight } from "@/constants/Colors";
 import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import AppleStyleSwipeableRow from "../swipableRow";
+import SwiperView from "../swipableRow";
 
 const UserSec = ({ userData }: { userData: UsersListProps }) => {
   const { dark } = useTheme();
   return (
-    <TouchableOpacity
-      style={{ ...styles.container }}
-      onPress={() => router.push(`/(auth)/user/${userData.id}`)}
-    >
-      <Image
-        source={require("../../../assets/images/defaultProfile.jpg")}
-        style={styles.profileImage}
-      />
-      <View
-        style={{
-          width: "80%",
-          borderBottomColor: "gray",
-          borderTopColor: "gray",
-          borderBottomWidth: 0.5,
-        }}
+    <SwiperView>
+      <TouchableOpacity
+        style={{ ...styles.container }}
+        onPress={() => router.push(`/(auth)/user/${userData.id}`)}
       >
-        <View style={styles.listHeaderView}>
-          <Text
-            style={{
-              color: dark ? "#FFFF" : theme.light.text,
-              fontWeight: "500",
-            }}
-          >
-            {userData.firstName}
-          </Text>
-          <Text style={{ color: dark ? tintColorLight : theme.light.text }}>
-            10: 40 PM
-          </Text>
-        </View>
-        <View style={styles.listHeaderView}>
-          <Text style={{ color: "gray" }}>How are you</Text>
-          <View style={styles.badge}>
-            <Text style={{ color: "#FFFF", fontWeight: "500" }}>5</Text>
+        <Image
+          source={require("../../../assets/images/defaultProfile.jpg")}
+          style={{ ...styles.profileImage, marginVertical: 10 }}
+        />
+        <View
+          style={{
+            width: "80%",
+            borderBottomColor: "gray",
+            borderTopColor: "gray",
+            borderBottomWidth: 0.5,
+          }}
+        >
+          <View style={styles.listHeaderView}>
+            <Text
+              style={{
+                color: dark ? "#FFFF" : theme.light.text,
+                fontWeight: "500",
+                marginVertical: 10,
+              }}
+            >
+              {userData.firstName}
+            </Text>
+            <Text
+              style={{
+                color: dark ? tintColorLight : theme.light.text,
+              }}
+            >
+              10: 40 PM
+            </Text>
+          </View>
+          <View style={styles.listHeaderView}>
+            <Text style={{ color: "gray" }}>How are you</Text>
+            <View style={styles.badge}>
+              <Text style={{ color: "#FFFF", fontWeight: "500" }}>5</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </SwiperView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 5,
     paddingHorizontal: 10,
     flexDirection: "row",
     gap: 10,

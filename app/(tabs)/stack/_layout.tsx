@@ -1,4 +1,4 @@
-import { theme } from "@/constants/Colors";
+import { theme, tintColorLight } from "@/constants/Colors";
 import { Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import Camera from "@/components/headerComponents/headerCamera";
@@ -15,7 +15,7 @@ function TabStackLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Settings",
+          title: "Chat",
           headerLargeTitle: true,
           headerShadowVisible: false,
           headerSearchBarOptions: {
@@ -26,10 +26,12 @@ function TabStackLayout() {
             textColor: dark ? theme.dark.inputText : theme.light.inputText,
             hintTextColor: dark ? theme.dark.inputText : theme.light.inputText,
             tintColor: dark ? theme.dark.inputText : theme.light.inputText,
+            headerIconColor: dark ? tintColorLight : theme.light.text,
             onChangeText(e) {
               dispatch(usersFilter(e.nativeEvent.text));
             },
           },
+          headerBlurEffect: "regular",
           headerRight: () => (
             <View style={styles.mainHeaderView}>
               <Camera />

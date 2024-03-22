@@ -14,7 +14,6 @@ export default function TabLayout() {
         options={{
           title: "Chat",
           headerShown: false,
-
           headerBackgroundContainerStyle: {
             backgroundColor: "trasparent",
           },
