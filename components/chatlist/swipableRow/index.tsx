@@ -10,9 +10,16 @@ import {
   tintColorDark,
   tintColorLight,
 } from "@/constants/Colors";
+import { UsersListProps } from "@/app/(tabs)/stack";
 
 export default class AppleStyleSwipeableRow extends Component<
-  PropsWithChildren<unknown>
+  PropsWithChildren<{
+    handleUpdateUserStatus: (
+      key: "archive" | "pinned" | "readMessage",
+      subKey?: string
+    ) => void;
+    userData: UsersListProps;
+  }>
 > {
   private renderLeftActions = (
     _progress: Animated.AnimatedInterpolation<number>,
@@ -23,9 +30,9 @@ export default class AppleStyleSwipeableRow extends Component<
       outputRange: [-20, 0],
       extrapolate: "extend",
     });
-    
+
     return (
-      <RectButton style={styles.leftAction} onPress={this.close}>
+      <RectButton style={styles.leftAction} onPress={this.archiveHandler}>
         <Animated.Text
           style={[
             styles.actionText,
@@ -46,7 +53,8 @@ export default class AppleStyleSwipeableRow extends Component<
     text: string,
     color: string,
     x: number,
-    progress: Animated.AnimatedInterpolation<number>
+    progress: Animated.AnimatedInterpolation<number>,
+    label?: "pinned" | "readMessage"
   ) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
@@ -54,8 +62,7 @@ export default class AppleStyleSwipeableRow extends Component<
     });
     const pressHandler = () => {
       this.close();
-      // eslint-disable-next-line no-alert
-      window.alert(text);
+      label && this.props.handleUpdateUserStatus(label, text);
     };
 
     return (
@@ -80,9 +87,23 @@ export default class AppleStyleSwipeableRow extends Component<
         flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
       }}
     >
-      {this.renderRightAction("More", "#A9A9A9", 250, progress)}
-      {this.renderRightAction("Pin", defaultMessageColor, 190, progress)}
-      {this.renderRightAction("Unread", tintColorLight, 130, progress)}
+      {/* {this.renderRightAction("More", "#A9A9A9", 250, progress)} */}
+      {this.renderRightAction(
+        !this.props.userData.pinned ? "Pin" : "Unpin",
+        defaultMessageColor,
+        250,
+        progress,
+        "pinned"
+      )}
+      {this.renderRightAction(
+        this.props.userData.readMessage || this.props.userData.unReadCount === 0
+          ? "Unread"
+          : "Read",
+        tintColorLight,
+        190,
+        progress,
+        "readMessage"
+      )}
     </View>
   );
 
@@ -94,6 +115,11 @@ export default class AppleStyleSwipeableRow extends Component<
 
   private close = () => {
     this.swipeableRow?.close();
+  };
+
+  private archiveHandler = () => {
+    this.swipeableRow?.close();
+    this.props.handleUpdateUserStatus("archive");
   };
   render() {
     const { children } = this.props;

@@ -4,13 +4,73 @@ import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
 import React, { useCallback, useRef } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AppleStyleSwipeableRow from "../swipableRow";
 import SwiperView from "../swipableRow";
+import AndDesignIcon from "@/components/icons/AntDesignIcon";
+import { useSelector } from "@/store";
+import { searchTxt } from "@/util";
 
-const UserSec = ({ userData }: { userData: UsersListProps }) => {
+const UserSec = ({
+  userData,
+  userList,
+  setUserList,
+  setFilteredUsersList,
+}: {
+  userData: UsersListProps;
+  userList: UsersListProps[];
+  setUserList: (userList: UsersListProps[]) => void;
+  setFilteredUsersList: (userList: UsersListProps[]) => void;
+}) => {
   const { dark } = useTheme();
+  const { searchUser } = useSelector((state) => state.userReducer);
+
+  const handleArchive = (key: "archive" | "pinned") => {
+    const updatedUser = [
+      { ...userData, [key]: !userData[key] },
+      ...userList.filter((usr) => usr.id !== userData.id),
+    ];
+    setUserList(updatedUser);
+    setFilteredUsersList(
+      updatedUser.filter((usr) =>
+        searchTxt(usr.firstName).includes(searchTxt(searchUser))
+      )
+    );
+  };
+
+  const handleRead = (subKey: string) => {
+    const updatedUser = [
+      ...userList.map((usr) => {
+        if (usr.id === userData.id) {
+          return {
+            ...usr,
+            unReadCount: -1,
+            readMessage: subKey === "Read" ? true : false,
+          };
+        } else return usr;
+      }),
+    ];
+    setUserList([...updatedUser]);
+    setFilteredUsersList([
+      ...updatedUser.filter((usr) =>
+        searchTxt(usr.firstName).includes(searchTxt(searchUser))
+      ),
+    ]);
+  };
+
+  const handleUpdateUserStatus = (
+    key: "archive" | "pinned" | "readMessage",
+    subKey?: string
+  ) => {
+    if (key === "archive" || key === "pinned") {
+      handleArchive(key);
+    } else {
+      subKey && handleRead(subKey);
+    }
+  };
   return (
-    <SwiperView>
+    <SwiperView
+      handleUpdateUserStatus={handleUpdateUserStatus}
+      userData={userData}
+    >
       <TouchableOpacity
         style={{ ...styles.container }}
         onPress={() => router.push(`/(auth)/user/${userData.id}`)}
@@ -47,8 +107,25 @@ const UserSec = ({ userData }: { userData: UsersListProps }) => {
           </View>
           <View style={styles.listHeaderView}>
             <Text style={{ color: "gray" }}>How are you</Text>
-            <View style={styles.badge}>
-              <Text style={{ color: "#FFFF", fontWeight: "500" }}>5</Text>
+            <View
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              {userData.pinned && (
+                <AndDesignIcon color="gray" name="pushpino" size={17} />
+              )}
+              <>
+                {!userData.readMessage && userData.unReadCount !== 0 && (
+                  <View style={styles.badge}>
+                    <Text style={{ color: "#FFFF", fontWeight: "500" }}>
+                      {userData.unReadCount > 0 && userData.unReadCount}
+                    </Text>
+                  </View>
+                )}
+              </>
             </View>
           </View>
         </View>
@@ -85,6 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     objectFit: "contain",
+    marginLeft: 10,
   },
 });
 

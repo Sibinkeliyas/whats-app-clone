@@ -1,6 +1,7 @@
 import UsersList from "@/components/chatlist/userslist";
 import useAuth from "@/hooks/useAuth";
 import { useSelector } from "@/store";
+import { searchTxt } from "@/util";
 import { getChatedList } from "@/util/api/users";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -10,40 +11,55 @@ export type UsersListProps = {
   firstName: string;
   lastName: string;
   title: string;
+  archive: boolean;
+  pinned: boolean;
+  unReadCount: number;
+  readMessage: boolean
 };
 
 export default function TabOneScreen() {
-  const { user } = useAuth();
   const { searchUser } = useSelector((state) => state.userReducer);
   const [usersList, setUsersList] = useState<UsersListProps[]>([]);
   const [filteredData, setFilteredData] = useState<UsersListProps[]>([]);
 
+  // fetch user data
   useEffect(() => {
-    const getUsersList = async () => {
+    (async () => {
       try {
-        const res = await getChatedList(user?.id || 0);
-        setUsersList(res.users);
-        setFilteredData(res.users);
+        const res = await getChatedList();
+        const updatedData = [
+          ...res.users.map((usr: UsersListProps) => ({
+            ...usr,
+            archive: false,
+            pinned: false,
+            unReadCount: Math.floor(Math.random() * 6),
+            readMessage : false
+          })),
+        ];
+        setUsersList(updatedData);
+        setFilteredData(updatedData);
       } catch (error) {}
-    };
-    getUsersList();
-  }, [user?.id]);
+    })();
+  }, []);
 
+  // filter user by searching
   useEffect(() => {
     const users = [...usersList];
     setFilteredData([
       ...users.filter((user) =>
-        user.firstName
-          .toLowerCase()
-          .replaceAll(" ", "")
-          .includes(searchUser.toLowerCase().replaceAll(" ", ""))
+        searchTxt(user.firstName).includes(searchTxt(searchUser))
       ),
     ]);
   }, [searchUser]);
 
   return (
     <View style={styles.container}>
-      <UsersList usersList={filteredData} />
+      <UsersList
+        filteredData={filteredData}
+        usersList={usersList}
+        setFilteredUsersList={setFilteredData}
+        setUsersList={setUsersList}
+      />
     </View>
   );
 }

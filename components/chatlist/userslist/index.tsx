@@ -1,30 +1,37 @@
 import { UsersListProps } from "@/app/(tabs)/stack";
-import React, { useState } from "react";
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import React from "react";
+import { FlatList, StyleSheet } from "react-native";
 import UserSec from "./UserSec";
-import useTheme from "@/hooks/useTheme";
-import { theme, tintColorLight } from "@/constants/Colors";
-import Icon from "@/components/icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-const UsersList = ({ usersList }: { usersList: UsersListProps[] }) => {
-  const { dark } = useTheme();
+const UsersList = ({
+  usersList,
+  filteredData,
+  setUsersList,
+  setFilteredUsersList,
+}: {
+  usersList: UsersListProps[];
+  filteredData: UsersListProps[];
+  setUsersList: (userList: UsersListProps[]) => void;
+  setFilteredUsersList: (userList: UsersListProps[]) => void;
+}) => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <FlatList
-        data={usersList}
+        data={filteredData}
         scrollEnabled
         contentInsetAdjustmentBehavior="automatic"
-        renderItem={({ item, index }) => (
-          <UserSec userData={item} key={index} />
-        )}
+        renderItem={({ item, index }) =>
+          !item.archive ? (
+            <UserSec
+              userData={item}
+              key={index}
+              setUserList={setUsersList}
+              userList={usersList}
+              setFilteredUsersList={setFilteredUsersList}
+            />
+          ) : null
+        }
       />
     </GestureHandlerRootView>
   );

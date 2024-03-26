@@ -7,7 +7,7 @@ const AndDesignIcon = (props: {
   size?: number;
 }) => {
   return (
-    <AntDesign size={props.size} style={{ marginBottom: -3 }} {...props} />
+    <AntDesign size={props.size} style={{ marginBottom: -3 }} {...props}  />
   );
 };
 

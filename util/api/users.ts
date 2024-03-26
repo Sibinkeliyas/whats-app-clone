@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getChatedList = async (userId: number) => {
+export const getChatedList = async () => {
   try {
     const res = await axios.get("https://dummyjson.com/users");
     return res.data;
